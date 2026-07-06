@@ -1,4 +1,4 @@
-package com.rafael.course.com.rafael.course.resources;
+package com.rafael.course.resources;
 
 import com.rafael.course.entities.User;
 import org.springframework.http.ResponseEntity;
