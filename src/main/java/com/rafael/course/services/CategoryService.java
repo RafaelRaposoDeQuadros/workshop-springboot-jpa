@@ -1,9 +1,7 @@
 package com.rafael.course.services;
 
 import com.rafael.course.entities.Category;
-import com.rafael.course.entities.User;
 import com.rafael.course.repositores.CategoryRepository;
-import com.rafael.course.repositores.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
