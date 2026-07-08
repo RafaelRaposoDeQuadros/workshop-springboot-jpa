@@ -4,6 +4,7 @@ import com.rafael.course.entities.User;
 import com.rafael.course.repositores.UserRepository;
 import com.rafael.course.services.exceptions.DatabaseException;
 import com.rafael.course.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -33,16 +34,29 @@ public class UserService {
 
     public void delete(Long id) {
         try {
+            if (!repository.existsById(id)) {
+                throw new ResourceNotFoundException(id);
+            }
+
             repository.deleteById(id);
-        } catch (DataIntegrityViolationException e) {
+        }
+        catch (ResourceNotFoundException e) {
+            throw e;
+        }
+        catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }
     }
 
     public User update(Long id, User obj){
-        User entity = repository.getReferenceById(id);
-        updateData (entity,obj);
-        return repository.save(entity);
+      try {
+          User entity = repository.getReferenceById(id);
+          updateData(entity, obj);
+          return repository.save(entity);
+      }catch (EntityNotFoundException e){
+          throw new ResourceNotFoundException(id);
+
+      }
     }
 
     private void updateData(User entity, User obj) {
